@@ -610,3 +610,4 @@ template:
   annotations:
     checksum/deployment: TMP_DEP_CHECKSUM
     linkerd.io/inject: disabled
+
