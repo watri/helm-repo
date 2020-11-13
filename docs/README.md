@@ -1,1 +1,1 @@
-#Helm Chart repo root path
+# helm-repo
