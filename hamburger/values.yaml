@@ -1,0 +1,612 @@
+metadata:
+  name: hamburger
+  namespace: dendi
+  labels: 
+    partOf: hamburger
+
+service: 
+  type: NodePort
+  port: 7723
+  protocol: TCP
+
+image:
+    repository: asia.gcr.io/kurio-dev/hamburger
+    tag: TMP_IMAGE_VERSION
+    pullPolicy: Always
+    
+spec:
+  replicasCout: 1
+  restartPolicy: OnFailure
+  
+  tolerations: []
+  # - key: pool
+  #   value: preemptible
+
+  affinity: {}
+  #   nodeAffinity:
+  #     weight: 70
+  #     key: cloud.google.com/gke-preemptible
+  #     operator: In
+  #     values: 
+  #       - "true"
+  #   podAntiAffinity:
+  #     weight: 50
+  #     key: part-of
+  #     operator: In
+  #     values: 
+  #       - avalon
+  #     topologyKey: "kubernetes.io/hostname"
+
+  containers: 
+    command: ["/app/hamburger","update", "recipe_with_promo"]
+    readinessProbe:
+      httpGet:
+        path: /ping
+        port: 7723
+      initialDelaySeconds: 10
+      periodSeconds: 5
+      timeoutSeconds: 5
+    livenessProbe:
+      httpGet:
+        path: /ping
+        port: 7723
+      initialDelaySeconds: 10
+      periodSeconds: 5
+      timeoutSeconds: 5
+
+    resources: 
+      limits:
+        cpu: 100m
+        memory: 200Mi
+      requests:
+        cpu: 50m
+        memory: 100Mi
+
+    securityContext: {}
+      # capabilities: 
+      #   drop:
+      #   - all
+      # readOnlyRootFilesystem: true
+      # runAsNonRoot: true
+      # runAsUser: 10002
+
+    volumeMounts:
+      - name: configs
+        mountPath: /hamburger
+
+    env: []
+      # Uncomment this section to add container env variables
+      # - name: DB_HOST
+      #   value: '10.11.0.32'
+      # - name: DB_password
+      #   value: 'xxxxxxx'
+
+    volumes:
+      - name: configs
+        configMap:
+          name: vol-configs-hamburger
+
+configmap: 
+  data:
+    config.json: |
+      {
+        "debug": true,
+        "server": {
+          "address": ":7723"
+        },
+        "context": {
+          "timeout": 30
+        },
+        "prometheus": {
+          "address": ":9001"
+        },
+        "cta_base_uri":"https://endeus.kurio.me",
+        "http": {
+          "max_idle_conns": 100,
+          "max_idle_conns_per_host": 100,
+          "keep_alive_timeout": 120,
+          "timeout": 5,
+          "server_read_timeout": 15,
+          "server_write_timeout": 15
+        },
+        "config_home_file": "config-home.json",
+        "config_web_home_file": "config-web-home.json",
+        "ravioli": {
+          "url": "http://ravioli.staging.svc.cluster.local"
+        },
+        "catalina": {
+          "url": "http://catalina.staging.svc.cluster.local"
+        },
+        "europa": {
+          "url": "http://europa.staging.svc.cluster.local"
+        },
+        "tortuga": {
+          "url": "http://tortuga.staging.svc.cluster.local"
+        },
+        "columbia": {
+          "url": "http://columbia.staging.svc.cluster.local",
+          "collection_recipe_id": "029efec8-5b6c-45a1-836b-1fae9ccaf6f3",
+          "collection_article_id": "f26b784a-2475-4336-b68d-3142a4609db1",
+          "recipe_with_promo_id": "89728e67-9443-4ff2-ad4c-fd4cb1229a7f",
+          "collection_config_home_app_id": "endeus-homepage-app",
+          "collection_config_home_web_id": "endeus-homepage-web"  
+        }
+      }
+    config-home.json: |
+      {
+        "id": "home-endeus",
+        "title": "Home Endeus",
+        "items": [
+          {
+            "content_type": "recipe",
+            "cta": {
+              "id": "cta-1",
+              "text": "Lihat Menu Harian",
+              "uri": "https://endeus.kurio.me/daily-menu/"
+            },
+            "id": "c-1",
+            "layout": "carousel",
+            "title": "Menu Hari Ini",
+            "type": "motd"
+          },
+          {
+            "content_type": "link",
+            "cta": {
+              "id": "",
+              "text": "",
+              "uri": ""
+            },
+            "id": "c-17",
+            "layout": "carousel",
+            "title": "Campaign and Activity",
+            "type": "link"
+          },
+          {
+            "content_type": "recipe",
+            "cta": {
+              "id": "",
+              "text": "",
+              "uri": ""
+            },
+            "id": "c-2",
+            "layout": "numbered-carousel",
+            "title": "Resep Terpopuler",
+            "type": "collection"
+          },
+          {
+            "type": "ads",
+            "layout": "banner",
+            "width": 640,
+            "height": 100,
+            "unit": "/21654959444/end_app_homepage_leaderboard_1"
+          },
+          {
+            "content_type": "recipe",
+            "cta": {
+              "id": "cta-2",
+              "text": "Lihat Semua",
+              "uri": "https://endeus.kurio.me/kategori/ada-endeus"
+            },
+            "id": "c-3",
+            "layout": "grid",
+            "title": "Resep Serba #AdaEndeus",
+            "type": "collection",
+            "metadata": {
+              "recipe_category_id": "ada-endeus",
+              "limit_item": 6
+            }
+          },
+          {
+            "content_type": "recipe",
+            "cta": {
+              "id": "cta-2",
+              "text": "Lihat Semua",
+              "uri": "https://endeus.kurio.me/resep?ingredients=ayam"
+            },
+            "id": "c-3",
+            "layout": "grid",
+            "title": "Resep Serba Ayam",
+            "type": "collection",
+            "metadata": {
+              "ingredients": "ayam",
+              "sort": "random"
+            }
+          },
+          {
+            "content_type": "recipe",
+            "cta": {
+              "id": "cta-2",
+              "text": "Lihat Semua",
+              "uri": "https://endeus.kurio.me/resep?ingredients=tahu%2Ctempe"
+            },
+            "id": "c-3",
+            "layout": "grid",
+            "title": "Resep Serba Tahu Tempe",
+            "type": "collection",
+            "metadata": {
+              "ingredients": "tahu,tempe",
+              "sort": "random"
+            }
+          },
+          {
+            "content_type": "recipe",
+            "cta": {
+              "id": "",
+              "text": "",
+              "uri": ""
+            },
+            "id": "c-4",
+            "layout": "circle-carousel",
+            "title": "Promo Resep",
+            "type": "collection"
+          },
+          {
+            "content_type": "chef",
+            "cta": {
+              "id": "cta-23",
+              "text": "Lihat Semua",
+              "uri": "https://endeus.kurio.me/chef"
+            },
+            "id": "c-30",
+            "layout": "circle-carousel",
+            "title": "Food Experts",
+            "type": "collection"
+          },
+          {
+            "content_type": "brand",
+            "cta": {
+                "id": "",
+                "text": "",
+                "uri": ""
+            },
+            "id": "c-21",
+            "layout": "carousel",
+            "title": "Featured Recipe",
+            "type": "collection"
+          },
+          {
+            "content_type": "recipe",
+            "cta": {
+              "id": "cta-3",
+              "text": "Lihat Semua Endeus Junior",
+              "uri": "https://endeus.kurio.me/junior"
+            },
+            "id": "c-16",
+            "layout": "carousel",
+            "title": "Inspirasi Menu Junior",
+            "type": "junior"
+          },
+          {
+            "type": "ads",
+            "layout": "banner",
+            "width": 640,
+            "height": 100,
+            "unit": "/21654959444/end_app_homepage_leaderboard_2"
+          },
+          {
+            "content_type": "story",
+            "cta": {
+              "id": "",
+              "text": "",
+              "uri": ""
+            },
+            "id": "c-14",
+            "layout": "numbered-carousel",
+            "title": "Artikel Terpopuler",
+            "type": "collection"
+          },
+          {
+            "content_type": "story",
+            "cta": {
+              "id": "cta-4",
+              "text": "Lihat Semua Artikel",
+              "uri": "https://endeus.kurio.me/artikel"
+            },
+            "id": "c-15",
+            "layout": "grid",
+            "title": "Artikel Terbaru",
+            "type": "collection"
+          },
+          {
+            "content_type": "recipe",
+            "cta": {
+              "id": "cta-5",
+              "text": "Lihat Semua",
+              "uri": "https://endeus.kurio.me/resep"
+            },
+            "id": "c-5",
+            "layout": "grid",
+            "title": "Lebih Banyak Inspirasi",
+            "type": "collection",
+            "metadata": {
+              "limit_item": 10
+            }
+          }
+        ]
+      }
+
+    config-web-home.json: |
+      {
+        "id": "home-endeus",
+        "title": "Home Endeus",
+        "items": [
+          {
+            "content_type": "link",
+            "cta": {
+              "id": "",
+              "text": "",
+              "uri": ""
+            },
+            "id": "c-17",
+            "layout": "carousel",
+            "title": "Campaign and Activity",
+            "type": "link"
+          },
+          {
+            "layout": "banner",
+            "type": "ads",
+            "network_id": "21654959444",
+            "items": [
+              {
+                "ad_unit": "end_web_homepage_leaderboard_1",
+                "sizes": [
+                  [728, 90], [320, 50]
+                ],
+                "size_mapping": [
+                  { "viewport": [768, 0], "sizes": [[728, 90]] },
+                  { "viewport": [0, 0], "sizes": [[320, 50]] }
+                ]
+              }
+            ]
+          },
+          {
+            "content_type": "recipe",
+            "cta": {
+              "id": "cta-1",
+              "text": "Lihat Menu Harian",
+              "uri": "https://endeus.kurio.me/daily-menu/"
+            },
+            "id": "c-1",
+            "layout": "carousel",
+            "title": "Menu Hari Ini",
+            "type": "motd"
+          },
+          {
+            "content_type": "chef",
+            "cta": {
+              "id": "cta-23",
+              "text": "Lihat Semua",
+              "uri": "https://endeus.kurio.me/chef"
+            },
+            "id": "c-30",
+            "layout": "carousel",
+            "title": "Food Experts",
+            "type": "collection",
+            "metadata": {
+              "limit_item": 3
+            }
+          },
+          {
+            "content_type": "brand",
+            "cta": {
+                "id": "",
+                "text": "",
+                "uri": ""
+            },
+            "id": "c-21",
+            "layout": "carousel",
+            "title": "Featured Recipe",
+            "type": "collection",
+            "metadata": {
+              "limit_item": 3
+            }
+          },
+          {
+            "content_type": "recipe",
+            "cta": {
+              "id": "cta-2",
+              "text": "Lihat Semua",
+              "uri": "https://endeus.kurio.me/resep?tags=cukup-5-bahan"
+            },
+            "id": "c-3",
+            "layout": "grid",
+            "title": "Resep Serba #Cukup5Bahan",
+            "type": "collection",
+            "metadata": {
+              "tags": "cukup-5-bahan",
+              "sort": "random",
+              "limit_item": 4
+            }
+          },
+          {
+            "content_type": "recipe",
+            "cta": {
+              "id": "cta-2",
+              "text": "Lihat Semua",
+              "uri": "https://endeus.kurio.me/resep?ingredients=ayam"
+            },
+            "id": "c-3",
+            "layout": "grid",
+            "title": "Resep Serba Ayam",
+            "type": "collection",
+            "metadata": {
+              "ingredients": "ayam",
+              "sort": "random",
+              "limit_item": 4
+            }
+          },
+          {
+            "content_type": "recipe",
+            "cta": {
+              "id": "cta-2",
+              "text": "Lihat Semua",
+              "uri": "https://endeus.kurio.me/resep?ingredients=tahu%2Ctempe"
+            },
+            "id": "c-3",
+            "layout": "grid",
+            "title": "Resep Serba Tahu Tempe",
+            "type": "collection",
+            "metadata": {
+              "ingredients": "tahu,tempe",
+              "sort": "random",
+              "limit_item": 4
+            }
+          },
+          {
+            "layout": "banner",
+            "type": "ads",
+            "network_id": "21654959444",
+            "items": [
+              {
+                "ad_unit": "end_web_homepage_mr_1",
+                "sizes": [
+                  [300, 250]
+                ],
+                "size_mapping": [
+                  { "viewport": [0, 0], "sizes": [[300, 250]] },
+                  { "viewport": [768, 0], "sizes": [] }
+                ]
+              }
+            ]
+          },
+          {
+            "content_type": "recipe",
+            "cta": {
+              "id": "cta-3",
+              "text": "Lihat Semua",
+              "uri": "https://endeus.kurio.me/junior"
+            },
+            "id": "c-16",
+            "layout": "grid",
+            "title": "Inspirasi Menu Junior",
+            "type": "junior",
+            "metadata": {
+              "limit_item": 4
+            }
+          },
+          {
+            "layout": "banner",
+            "type": "ads",
+            "network_id": "21654959444",
+            "items": [
+              {
+                "ad_unit": "end_web_homepage_leaderboard_2",
+                "sizes": [
+                  [728, 90], [320, 50]
+                ],
+                "size_mapping": [
+                  { "viewport": [768, 0], "sizes": [[728, 90]] },
+                  { "viewport": [0, 0], "sizes": [[320, 50]] }
+                ]
+              }
+            ]
+          },
+          {
+            "content_type": "story",
+            "cta": {
+              "id": "",
+              "text": "",
+              "uri": ""
+            },
+            "id": "c-14",
+            "layout": "numbered-list",
+            "title": "Artikel Terpopuler",
+            "type": "popular",
+            "metadata": {
+              "limit_item": 5
+            }
+          },
+          {
+            "content_type": "recipe",
+            "cta": {
+              "id": "",
+              "text": "",
+              "uri": ""
+            },
+            "id": "c-2",
+            "layout": "carousel",
+            "title": "Video Resep Terpopuler",
+            "type": "popular",
+            "metadata": {
+              "limit_item": 4
+            }
+          },
+          {
+            "content_type": "story",
+            "cta": {
+              "id": "cta-4",
+              "text": "Lihat Semua",
+              "uri": "https://endeus.kurio.me/artikel"
+            },
+            "id": "c-25",
+            "layout": "list",
+            "title": "Artikel",
+            "type": "collection",
+            "metadata": {
+              "limit_item": 5
+            }
+          },
+          {
+            "content_type": "story",
+            "cta": {
+              "id": "cta-20",
+              "text": "Lihat Semua",
+              "uri": "https://endeus.kurio.me/artikel/kategori/events-promo"
+            },
+            "id": "c-26",
+            "layout": "carousel",
+            "title": "Events & Promo",
+            "type": "collection",
+            "metadata": {
+              "limit_item": 4
+            }
+          },
+          {
+            "content_type": "recipe_category",
+            "cta": {
+              "id": "cta-22",
+              "text": "Lihat Semua",
+              "uri": "https://endeus.kurio.me/kategori-resep"
+            },
+            "id": "c-6",
+            "layout": "carousel",
+            "title": "Kategori Populer",
+            "type": "collection"
+          }
+        ]
+      }
+
+
+ingress:
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      proxy_set_header l5d-dst-override $service_name.$namespace.svc.cluster.local;
+
+  tls: []
+    # - secretName: star-kurio-me
+  
+  rules:
+    - host: endeus-feed.kurio.me
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: hamburger
+              servicePort: 80
+
+hpa:
+  minReplicas: 1
+  maxReplicas: 5
+  metrics:
+    cpu:
+      targetAverageUtilization: 70
+    # memory:
+    #   targetAverageUtilization: 70
+
+cron:
+  schedule: "* * * * *"
+template:
+  annotations:
+    checksum/deployment: TMP_DEP_CHECKSUM
+    linkerd.io/inject: disabled
