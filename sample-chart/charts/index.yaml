@@ -1,0 +1,14 @@
+apiVersion: v1
+entries:
+  sample-chart:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2020-11-13T09:05:59.447350365Z"
+    description: A Helm chart for Kubernetes
+    digest: 3edb25ef10ea09803bf07a01d312b370c845bda558034fd90e0d1ea1a6887c22
+    name: sample-chart
+    type: application
+    urls:
+    - https://dendi.github.io/helm-repo/sample-chart-2.0.0.tgz
+    version: 2.0.0
+generated: "2020-11-13T09:05:59.44594966Z"
