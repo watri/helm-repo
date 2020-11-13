@@ -2,7 +2,7 @@ apiVersion: v1
 entries:
   hamburger:
   - apiVersion: v1
-    created: "2020-11-13T08:50:22.369832153Z"
+    created: "2020-11-13T09:13:25.576366912Z"
     description: hamburger
     digest: 45e6860e9bfe11fa2eb2dcc56a5e94896ec7ff476b5c80558b25a210ef29b7fa
     name: hamburger
@@ -10,11 +10,22 @@ entries:
     - https://dendi.github.io/helm-repo/hamburger-v1.0.3.tgz
     version: v1.0.3
   - apiVersion: v1
-    created: "2020-11-13T08:50:22.368395012Z"
+    created: "2020-11-13T09:13:25.574926272Z"
     description: hamburger
     digest: b64634f254dcdf76187aced9935874ed235abee932294f2259c8114f39efab2a
     name: hamburger
     urls:
     - https://dendi.github.io/helm-repo/hamburger-v1.0.1.tgz
     version: v1.0.1
-generated: "2020-11-13T08:50:22.366225574Z"
+  sample-chart:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2020-11-13T09:13:25.577027056Z"
+    description: A Helm chart for Kubernetes
+    digest: 00a9ec3a9ce64d09c5287ee2f86b7a0da6265d8dd7e2dd0701f28dc3f0b23a17
+    name: sample-chart
+    type: application
+    urls:
+    - https://dendi.github.io/helm-repo/sample-chart-2.0.0.tgz
+    version: 2.0.0
+generated: "2020-11-13T09:13:25.573075803Z"
