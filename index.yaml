@@ -2,11 +2,11 @@ apiVersion: v1
 entries:
   hamburger:
   - apiVersion: v1
-    created: "2020-11-13T08:03:42.050548343Z"
+    created: "2020-11-13T08:42:57.3214503Z"
     description: hamburger
-    digest: 7f92a6931a910008d45a5b56b9d2ccdc5980aa00b5023ffbc732bb37f78feff4
+    digest: b64634f254dcdf76187aced9935874ed235abee932294f2259c8114f39efab2a
     name: hamburger
     urls:
-    - https://dendi.github.io/helm-repo/hamburger-1.0.0.tgz
-    version: 1.0.0
-generated: "2020-11-13T08:03:42.049048492Z"
+    - https://dendi.github.io/helm-repo/hamburger-v1.0.1.tgz
+    version: v1.0.1
+generated: "2020-11-13T08:42:57.318560205Z"
