@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Values.metadata.labels.app }}
+  namespace: {{ .Values.metadata.namespace }}
+  labels:
+    app: {{ .Values.metadata.labels.app }}
+    part-of: {{ .Values.metadata.labels.partOf }}
+spec:
+  serviceName: {{ .Release.Name | quote}}
+  replicas: {{ .Values.spec.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.metadata.labels.app }}
+      part-of: {{ .Values.metadata.labels.partOf }}
+  template:
+    metadata:
+      labels:
+          app: {{ .Values.metadata.labels.app }}
+          part-of: {{ .Values.metadata.labels.partOf }}
+    spec:
+      tolerations: 
+        {{- toYaml .Values.spec.tolerations | nindent 8 }}
+      affinity:
+        {{- toYaml .Values.spec.affinity | nindent 8 }}
+      containers:
+        - name: {{ .Values.metadata.labels.app }}
+          image: "{{ .Values.image.repository }}:{{ default .Chart.AppVersion .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: 
+            {{- range .Values.spec.containers.command }}
+              - {{ . | quote }}
+            {{- end }}
+          ports:
+            - containerPort: {{ .Values.service.port }}
+              name: {{ .Values.metadata.labels.app }}
+          readinessProbe:
+            httpGet:
+              path: {{.Values.readinessProbe.path}}
+              port: {{.Values.readinessProbe.port}}
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: {{.Values.readinessProbe.path}}
+              port: {{.Values.readinessProbe.port}}
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 10
+{{- if .Values.spec.volumeClaimTemplates }}
+  volumeClaimTemplates:
+{{ toYaml .Values.spec.volumeClaimTemplates | indent 4 }}
+{{- end }}

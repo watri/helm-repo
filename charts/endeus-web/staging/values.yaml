@@ -1,0 +1,161 @@
+metadata:
+  namespace: dendi
+  labels:
+    app: endeus-web
+    partOf: endeus-web
+
+service: 
+  type: NodePort
+  port: 7723
+
+image:
+    repository: asia.gcr.io/kurio-dev/endeus-web
+    tag: TMP_IMAGE_VERSION
+    pullPolicy: Always
+    
+spec:
+  replicasCout: 1
+
+  # tolerations:
+  #   key: pool
+  #   value: preemptible 
+
+  # affinity:
+  #   nodeAffinity:
+  #     weight: 70
+  #     key: cloud.google.com/gke-preemptible
+  #     operator: In
+  #     values: 
+  #       - "true"
+    
+  #   podAntiAffinity:
+  #     weight: 50
+  #     key: part-of
+  #     operator: In
+  #     values: 
+  #       - avalon
+  #     topologyKey: "kubernetes.io/hostname"
+
+  containers: 
+    readinessProbe:
+      httpGet:
+        path: /ping
+        port: 7723
+      initialDelaySeconds: 15
+      periodSeconds: 30
+      timeoutSeconds: 10
+    livenessProbe:
+      httpGet:
+        path: /ping
+        port: 7723
+      initialDelaySeconds: 15
+      periodSeconds: 30
+      timeoutSeconds: 10
+
+    resources: 
+      limits:
+        cpu: 400m
+        memory: 500Mi
+      requests:
+        cpu: 200m
+        memory: 256Mi
+
+    securityContext:
+      capabilities:
+        drop:
+        - all
+      readOnlyRootFilesystem: true
+      runAsNonRoot: true
+      runAsUser: 10002
+    volumeMounts:
+      - name: tz-config
+        mountPath: /etc/localtime 
+
+    env: []
+      # Uncomment this section to add container env variables
+      # - name: DB_HOST
+      #   value: '10.11.0.32'
+      # - name: DB_password
+      #   value: 'xxxxxxx'
+
+  volumes:
+    - name: tz-config
+      hostPath:
+        path: /usr/share/zoneinfo/Asia/Jakarta
+
+configmap: 
+  # data:
+  #   FOO: "BAR"
+  #
+  #   filename.json: |
+  #     {
+  #      define file content
+  #     }
+
+
+
+ingress:
+  annotations:
+    kubernetes.io/ingress.class: "nginx-public"
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      proxy_cache microcacheapi;
+      proxy_cache_background_update on;
+      proxy_cache_bypass $cookie_nocache $http_pragma $http_authorization $bypass $bypass_location;
+      proxy_cache_key $host$request_uri;
+      proxy_cache_lock on;
+      proxy_cache_revalidate on;
+      proxy_cache_use_stale updating error timeout http_500 http_502 http_503 http_504;
+      proxy_cache_valid 200 10m;
+      proxy_no_cache $cookie_nocache $http_pragma $http_authorization $bypass $bypass_location;
+      add_header X-Cache-Status $upstream_cache_status;
+      add_header X-Robots-Tag "noindex";
+      proxy_set_header l5d-dst-override $service_name.$namespace.svc.cluster.local:80;
+
+    nginx.ingress.kubernetes.io/from-to-www-redirect: "true"
+    nginx.ingress.kubernetes.io/limit-rps: "50"
+    nginx.ingress.kubernetes.io/proxy-buffering: "on"
+    nginx.ingress.kubernetes.io/server-snippet: |
+      if ($bad_bot = '3') {
+        return 444;
+      }
+
+      if ($bad_words) {
+        return 444;
+      }
+
+      if ($bad_referer) {
+        return 444;
+      }
+
+      if ($validate_client) {
+        return 444;
+      }
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+  tls: 
+    - secretName: star-kurio-me
+  
+  rules:
+    - host: endeus.kurio.me
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: endeus-web
+              servicePort: 80
+    - host: endeustv.kurio.me
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: endeus-web
+              servicePort: 80
+
+hpa:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 2
+  metrics:
+    cpu:
+      targetAverageUtilization: 70
+    # memory:
+    #   targetAverageUtilization: 70
