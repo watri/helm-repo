@@ -11,7 +11,8 @@ service:
 
 image:
     repository: dendipradigta/sample-nodejs
-    tag: TMP_IMAGE_VERSION
+#    tag: TMP_IMAGE_VERSION
+    tag: latest
     pullPolicy: Always
     
 spec:
