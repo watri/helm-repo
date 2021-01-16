@@ -98,7 +98,7 @@ ingress:
     # - secretName: star-kurio-me
   
   rules:
-    - host: endeus-feed.kurio.me
+    - host: sample.dendi.com
       http:
         paths:
           - path: /
