@@ -1,0 +1,33 @@
+apiVersion: v1
+entries:
+  hamburger:
+  - apiVersion: v1
+    appVersion: 3.0.5
+    created: "2021-01-16T20:01:36.830214893Z"
+    description: hamburger syncronizer
+    digest: bcef30a5aca4b943177c1478a9e864fc8f94244777a79b1af3eb71655784370b
+    name: hamburger
+    urls:
+    - https://dendi.github.io/helm-repo/hamburger-5.5.5.tgz
+    version: 5.5.5
+  sample-nodejs-app:
+  - apiVersion: v1
+    appVersion: 3.0.5
+    created: "2021-01-16T20:01:36.831301802Z"
+    description: sample-nodejs-app
+    digest: c5f6c7a2172f663dcbda8da6ba48b87b7dbc1aa5f99ce02ebf013088ba060d2b
+    name: sample-nodejs-app
+    urls:
+    - https://dendi.github.io/helm-repo/sample-nodejs-app-5.5.6.tgz
+    version: 5.5.6
+  trivy:
+  - apiVersion: v1
+    appVersion: 0.12.0
+    created: "2021-01-16T20:01:36.832303915Z"
+    description: trivy
+    digest: ea0b8199f30e711176356579308e9e9a5edc710beee822547d76eb143670d2c1
+    name: trivy
+    urls:
+    - https://dendi.github.io/helm-repo/trivy-1.0.1.tgz
+    version: 1.0.1
+generated: "2021-01-16T20:01:36.827580088Z"
