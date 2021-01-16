@@ -115,10 +115,5 @@ hpa:
     # memory:
     #   targetAverageUtilization: 70
 
-cron: {}
-#   schedule: "* * * * *"
-# template:
-#   annotations:
-#     checksum/deployment: TMP_DEP_CHECKSUM
-#     linkerd.io/inject: disabled
+
 
