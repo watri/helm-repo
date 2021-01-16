@@ -107,14 +107,5 @@ ingress:
               serviceName: sample-nodejs
               servicePort: 80
 
-hpa: 
-  minReplicas: ""
-  maxReplicas: ""
-  metrics:
-    cpu:
-      targetAverageUtilization: ""
-    # memory:
-    #   targetAverageUtilization: 70
-
 
 
