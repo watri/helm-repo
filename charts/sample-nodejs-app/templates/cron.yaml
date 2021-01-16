@@ -1,0 +1,36 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ .Values.metadata.name }}-cron
+  namespace: {{ .Values.metadata.namespace }}
+  labels:
+    app: {{ .Values.metadata.name }}
+    part-of: {{ .Values.metadata.labels.partOf }}
+spec:
+  schedule: {{ .Values.cron.schedule | quote }}
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          annotations:
+            checksum/deployment: TMP_DEP_CHECKSUM
+            linkerd.io/inject: disabled
+          labels:
+            app: {{ .Values.metadata.name }}-cron
+            part-of: {{ .Values.metadata.labels.partOf }}
+        spec:
+          restartPolicy: {{ .Values.spec.restartPolicy }} 
+          containers:
+            - name: {{ .Values.metadata.name }}
+              image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+              command: 
+                {{- range .Values.spec.containers.command }}
+                - {{ . | quote }}
+                {{- end }}
+              volumeMounts: 
+                {{- toYaml .Values.spec.containers.volumeMounts | nindent 16 }}
+              resources:
+                {{- toYaml .Values.spec.containers.resources | nindent 16 }} 
+          volumes:
+            {{- toYaml .Values.spec.containers.volumes | nindent 14 }}
+          
