@@ -16,7 +16,7 @@ image:
     pullPolicy: Always
     
 spec:
-  replicasCout: 5
+  replicasCout: 2
   restartPolicy: OnFailure
   
   tolerations: []
