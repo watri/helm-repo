@@ -1,0 +1,13 @@
+apiVersion: v1
+entries:
+  sample-nodejs-app:
+  - apiVersion: v1
+    appVersion: 3.0.6
+    created: "2021-01-17T10:26:58.212619191Z"
+    description: sample-nodejs-app
+    digest: c6cd590312d6e3a2182c2617679752446c95dfaf401479539aa000f7ac9307aa
+    name: sample-nodejs-app
+    urls:
+    - https://dendi.github.io/helm-repo/sample-nodejs-app-5.5.7.tgz
+    version: 5.5.7
+generated: "2021-01-17T10:26:58.19680365Z"
