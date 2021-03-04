@@ -5,7 +5,7 @@ metadata:
   namespace: {{ .Values.metadata.namespace }}
 spec:
   selector:
-    name: {{ Values.metadata.labels.name }}
+    name: {{ .Values.metadata.labels.name }}
   ports:
     - port: {{ .Values.service.port }}
       targetPort: {{ .Values.spec.port }}
