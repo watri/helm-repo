@@ -73,7 +73,7 @@ ingress:
               serviceName: koala-listing-web-services-staging
               servicePort: 3000
 
-hpa: []
+#hpa: []
   # enabled: false
   # minReplicas: 1
   # maxReplicas: 2
