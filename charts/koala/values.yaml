@@ -41,7 +41,7 @@ spec:
   #       cpu: 200m
   #       memory: 256Mi
 
-    env: []
+    #env: []
       # Uncomment this section to add container env variables
       # - name: DB_HOST
       #   value: '10.11.0.32'
