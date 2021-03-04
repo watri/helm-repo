@@ -3,11 +3,15 @@ kind: Ingress
 metadata:
   name: {{ .Values.ingress.name }}
   namespace: {{ .Values.metadata.namespace }}
+
+   {{- with .Values.ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
+
   labels:
     name: {{ .Values.ingress.labels.name }}
+    
 spec:
 {{- if .Values.ingress.tls }}
   tls:
