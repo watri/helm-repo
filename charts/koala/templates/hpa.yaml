@@ -17,4 +17,4 @@
 #   - type: Resource
 #     resource:
 #       name: cpu
-#       targetAverageUtilization: {{ .Values.hpa.metrics.cpu.targetAverageUtilization }}
+#       targetAverageUtilization: {{ .Values.hpa.metrics.cpu.targetAver 
