@@ -21,7 +21,7 @@ spec:
         image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         ports:
-        - containerPort: {{ .Values.spec.ports }}
+        - containerPort: {{ .Values.spec.port }}
       nodeSelector:
         ctienv: {{ .Values.spec.nodeSelector }}
         
