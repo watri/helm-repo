@@ -8,7 +8,7 @@ entries:
     digest: 05d3fd06b2cbc7f83ce571f3dba8ad9dd8e3271b8111cf710a06183f0f5de508
     name: koala
     urls:
-    - charts/koala-1.1.0.tgz
+    - docs/koala-1.1.0.tgz
     version: 1.1.0
   sample-nodejs-app:
   - apiVersion: v1
