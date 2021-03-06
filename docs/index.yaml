@@ -3,21 +3,21 @@ entries:
   koala:
   - apiVersion: v1
     appVersion: 1.1.0
-    created: "2021-03-06T17:28:12.7317505+07:00"
+    created: "2021-03-06T17:45:26.1738189+07:00"
     description: A Helm chart for Kubernetes
     digest: 05d3fd06b2cbc7f83ce571f3dba8ad9dd8e3271b8111cf710a06183f0f5de508
     name: koala
     urls:
-    - docs/koala-1.1.0.tgz
+    - koala-1.1.0.tgz
     version: 1.1.0
   sample-nodejs-app:
   - apiVersion: v1
     appVersion: 3.0.6
-    created: "2021-03-06T17:28:12.7327501+07:00"
+    created: "2021-03-06T17:45:26.1748179+07:00"
     description: sample-nodejs-app
     digest: c6cd590312d6e3a2182c2617679752446c95dfaf401479539aa000f7ac9307aa
     name: sample-nodejs-app
     urls:
-    - docs/sample-nodejs-app-5.5.7.tgz
+    - sample-nodejs-app-5.5.7.tgz
     version: 5.5.7
-generated: "2021-03-06T17:28:12.7257495+07:00"
+generated: "2021-03-06T17:45:26.1728176+07:00"
