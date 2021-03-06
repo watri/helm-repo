@@ -1,69 +1,43 @@
-metadata:
-  namespace: staging
-  labels:
-    name: koala-listing-web-staging
+replicaCount: 1
 
-service: 
-  name: koala-listing-web-services-staging
-  port: 3000
+nodeSelector: staging
+
+namespace: staging
+
+metadata:
+  deployment: koala-listing-web-staging
+  service: koala-listing-web-services-staging
+  ingress: koala-listing-web-ingress
+  hpa: hpa-koala-listing-web-production 
 
 image:
-    repository: koalapro/koala_listing_web
-    tag: staging
-    pullPolicy: Always
-    
-spec:
-  replicas: 1
-  port: 3000
-  nodeSelector: staging
-  
-  # containers: 
-  #   readinessProbe: 
-  #     httpGet:
-  #       path: /ping
-  #       port: 7723
-  #     initialDelaySeconds: 15
-  #     periodSeconds: 30
-  #     timeoutSeconds: 10
-  #   livenessProbe:
-  #     httpGet:
-  #       path: /ping
-  #       port: 7723
-  #     initialDelaySeconds: 15
-  #     periodSeconds: 30
-  #     timeoutSeconds: 10
+  repository: koalapro/koala_listing_web
+  tag: staging
+  pullPolicy: Always
 
-  #   resources: 
-  #     limits:
-  #       cpu: 400m
-  #       memory: 500Mi
-  #     requests:
-  #       cpu: 200m
-  #       memory: 256Mi
+port: 
+  type: ClusterIP
+  containerport: 3000
+  serviceport: 3000
 
-    #env: []
-      # Uncomment this section to add container env variables
-      # - name: DB_HOST
-      #   value: '10.11.0.32'
-      # - name: DB_password
-      #   value: 'xxxxxxx'
-
-  # volumes:
-  #   - name: tz-config
-  #     hostPath:
-  #       path: /usr/share/zoneinfo/Asia/Jakarta
-
-configmap: [] 
+resources:
+  limits:
+    cpu: 200m
+    memory: 256Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
 
 ingress:
-  name: koala-listing-web-ingress
-  labels:
-    name: nginx-ingress
+  enabled: true
+  labels: nginx-ingress
   annotations:
     kubernetes.io/ingress.class: "nginx"
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
-  tls: 
+  tls:
     - secretName: koala-pro-id-tls
+      hosts:
+        - listing.koala-pro.id
   rules:
     - host: listing.koala-pro.id
       http:
@@ -72,13 +46,13 @@ ingress:
             backend:
               serviceName: koala-listing-web-services-staging
               servicePort: 3000
-
-#hpa: []
-  # enabled: false
-  # minReplicas: 1
-  # maxReplicas: 2
-  # metrics:
-  #   cpu:
-  #     targetAverageUtilization: 70
-  #   # memory:
-  #   #   targetAverageUtilization: 70
+  
+hpa:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 4
+  metrics:
+    cpu:
+      targetAverageUtilization: 60
+    # memory:
+    #   targetAverageUtilization: 70
