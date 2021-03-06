@@ -37,4 +37,4 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       nodeSelector: 
-        ctienv: "{{ .Values.nodeSelector }}"
+        {{- toYaml .Values.nodeSelector | nindent 8 }}

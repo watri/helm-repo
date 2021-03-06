@@ -1,6 +1,7 @@
 replicaCount: 1
 
-nodeSelector: staging
+nodeSelector:
+  ctienv: "staging"
 
 namespace: staging
 
