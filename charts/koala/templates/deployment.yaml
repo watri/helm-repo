@@ -16,7 +16,7 @@ spec:
       labels:
         name: {{ .Values.metadata.deployment }}
   {{ else }}
-  spec:
+spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
