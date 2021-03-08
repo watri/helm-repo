@@ -1,40 +1,42 @@
+{{- if .Values.deployment.enabled -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.metadata.deployment }}
+  name: {{ .Values.deployment.name }}
   namespace: {{ .Values.namespace }}
   labels:
-    name: {{ .Values.metadata.deployment }}
+    name: {{ .Values.deployment.name }}
 {{- if .Values.hpa.enabled }}
 spec:
   selector:
     matchLabels:
-      name: {{ .Values.metadata.deployment }}
+      name: {{ .Values.deployment.name }}
   template:
     metadata:
-      name: {{ .Values.metadata.deployment }}
+      name: {{ .Values.deployment.name }}
       labels:
-        name: {{ .Values.metadata.deployment }}
+        name: {{ .Values.deployment.name }}
   {{ else }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      name: {{ .Values.metadata.deployment }}
+      name: {{ .Values.deployment.name }}
   template:
     metadata:
-      name: {{ .Values.metadata.deployment }}
+      name: {{ .Values.deployment.name }}
       labels:
-        name: {{ .Values.metadata.deployment }}
+        name: {{ .Values.deployment.name }}
 {{ end }}
     spec:
       containers:
-        - name: {{ .Values.metadata.deployment }}
+        - name: {{ .Values.deployment.name }}
           image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - containerPort: {{ .Values.port.containerport }}
+            - containerPort: {{ .Values.deployment.containerport }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       nodeSelector: 
         {{- toYaml .Values.nodeSelector | nindent 8 }}
+{{- end }}

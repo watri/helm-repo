@@ -1,12 +1,14 @@
+{{- if .Values.service.enabled -}}
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Values.metadata.service }}
+  name: {{ .Values.service.name }}
   namespace: {{ .Values.namespace }}
 spec:
   selector: 
-    name: {{ .Values.metadata.service }}
-  type: {{ .Values.port.type }}
+    name: {{ .Values.service.name }}
+  type: {{ .Values.service.typeport }}
   ports:
-    - port: {{ .Values.port.serviceport }}
-      targetPort: {{ .Values.port.containerport }}
+    - port: {{ .Values.service.serviceport }}
+      targetPort: {{ .Values.deployment.containerport }}
+{{- end }}
