@@ -11,7 +11,6 @@ deployment:
   name: koala-listing-web-staging
   containerport: 3000
 
-
 image:
     repository: koalapro/koala_listing_web
     tag: staging
