@@ -1,0 +1,73 @@
+replicaCount: 1
+
+nodeSelector:
+
+namespace: staging
+
+#deployment values
+
+deployment:
+  enabled: false
+  name: koala-listing-web-staging
+  containerport: 3000
+  env:
+    - name: MESSAGE
+      value: Hello from the first deployment!
+  command: ["/go/bin/app"]
+  args: ["api"]
+
+image:
+    repository: koalapro/koala_listing_web
+    tag: staging
+    pullPolicy: Always
+
+resources:
+    limits:
+      cpu: 200m
+      memory: 256Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+
+#service values
+ 
+service:
+  enabled: false
+  name: koala-listing-web-services-staging
+  typeport: ClusterIP
+  serviceport: 3000
+
+#ingress Values
+
+ingress:
+  enabled: false
+  name: koala-listing-web-ingress
+  labels: nginx-ingress
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+  tls:
+    - secretName: koala-pro-id-tls
+      hosts:
+        - listing.koala-pro.id
+  rules:
+    - host: listing.koala-pro.id
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: koala-listing-web-services-staging
+              servicePort: 3000
+
+#hpa values
+
+hpa:
+    enabled: false
+    name: hpa-koala-listing-web-production
+    minReplicas: 2
+    maxReplicas: 4
+    metrics:
+      cpu:
+        targetAverageUtilization: 60
+      # memory:
+      #   targetAverageUtilization: 70

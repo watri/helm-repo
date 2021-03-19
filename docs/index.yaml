@@ -1,13 +1,23 @@
 apiVersion: v1
 entries:
+  koala:
+  - apiVersion: v1
+    appVersion: 1.1.1
+    created: "2021-03-19T11:26:58.1484929+07:00"
+    description: A Helm chart for Koala environment
+    digest: f02bacacf1564d0711369def78f2ebc684dab550b261ec998f57e73f510d4b4b
+    name: koala
+    urls:
+    - koala-1.1.1.tgz
+    version: 1.1.1
   sample-nodejs-app:
   - apiVersion: v1
     appVersion: 3.0.6
-    created: "2021-01-17T10:26:58.212619191Z"
+    created: "2021-03-19T11:26:58.1574938+07:00"
     description: sample-nodejs-app
     digest: c6cd590312d6e3a2182c2617679752446c95dfaf401479539aa000f7ac9307aa
     name: sample-nodejs-app
     urls:
-    - https://dendi.github.io/helm-repo/sample-nodejs-app-5.5.7.tgz
+    - sample-nodejs-app-5.5.7.tgz
     version: 5.5.7
-generated: "2021-01-17T10:26:58.19680365Z"
+generated: "2021-03-19T11:26:58.146492+07:00"

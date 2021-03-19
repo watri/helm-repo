@@ -1,0 +1,54 @@
+{{- if .Values.deployment.enabled -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.deployment.name }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    name: {{ .Values.deployment.name }}
+{{- if .Values.hpa.enabled }}
+spec:
+  selector:
+    matchLabels:
+      name: {{ .Values.deployment.name }}
+  template:
+    metadata:
+      name: {{ .Values.deployment.name }}
+      labels:
+        name: {{ .Values.deployment.name }}
+  {{ else }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      name: {{ .Values.deployment.name }}
+  template:
+    metadata:
+      name: {{ .Values.deployment.name }}
+      labels:
+        name: {{ .Values.deployment.name }}
+{{- end }}
+    spec:
+      containers:
+        - name: {{ .Values.deployment.name }}
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.deployment.containerport }}
+          {{- if .Values.deployment.env }}
+          env:
+          {{- toYaml .Values.deployment.env | nindent 12 }}
+          {{- end }}
+          {{- if .Values.deployment.command }}
+          command: {{ .Values.deployment.command }}
+          {{- end }}
+          {{- if .Values.deployment.args }}
+          args: {{ .Values.deployment.args }}
+          {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- if .Values.nodeSelector }}      
+      nodeSelector: 
+        {{- toYaml .Values.nodeSelector | nindent 8 }}
+      {{- end }}
+{{- end }}
