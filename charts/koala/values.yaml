@@ -10,6 +10,11 @@ deployment:
   enabled: false
   name: koala-listing-web-staging
   containerport: 3000
+  env:
+    - name: MESSAGE
+      value: Hello from the first deployment!
+  command: ["/go/bin/app"]
+  args: ["api"]
 
 image:
     repository: koalapro/koala_listing_web
